@@ -1,7 +1,7 @@
 /* CSS styles */
 
 html {
-    margin: 3em;
+    margin: 0;
 }
 
 /* canvas {
@@ -22,25 +22,59 @@ html {
   background-color: white;
 } */
 
-  
-
 body {
+    height: 100vh;
+    width: 100vw;
     color: var(--primary-color);
     font-family: "IBM Plex Mono", monospace;
     font-weight: 300;
     font-style: normal;
-    cursor: none; /* this hides the default cursor*/
+    cursor: none; /*this hides the default cursor*/
+}
+
+.compass-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background: radial-gradient(circle, #fff 60%, #ddd);
+}
+
+.compass-needle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 4px;
+  height: 80px;
+  background: red;
+  transform-origin: bottom center;
+  transform: rotate(0deg);
+  transition: transform 0.1s linear;
+}
+
+
+#cursors {
+  margin: 0;
+  position: absolute;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 }
 
 .custom-cursor {
   position: absolute; 
-  width: 10px;
-  height: 100px; 
+  z-index: 999;
+  width: 50px;
+  height: 10px; 
   background-color: black;
-  z-index: -100;
+  z-index: 1000; 
   pointer-events: none;
   transform-origin: 50% 0%; 
-  border-radius: 5px;
+  border-radius: 1px;
+  box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.5);
+  /* shadow default has no offset */
 }
 
 hr {
@@ -52,6 +86,36 @@ hr {
     /* border-width: 10px; */
     color: var(--primary-color);
 }
+
+.container {
+  display:inline-block;
+  min-height: 90vh;
+}
+
+#mapholder {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: -1000; /*Embed map at the bottom */
+  opacity: 30%;
+}
+#mapholder img {
+  width: 100%; /* Make image responsive */
+  height: 100%; /* Make image responsive */
+  object-fit: cover; /* Maintain aspect ratio */
+  position: absolute;
+  z-index: -1000;
+}
+
+/* 
+iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+} */
 
 /* Font Family Reference
 .ibm-plex-mono-thin {
