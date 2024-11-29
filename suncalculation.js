@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 //used the DOMContentLoaded Event listener because console kept showing me an error that browser is trying to assess #cursors before the DOM is fully loaded. 
 document.addEventListener("DOMContentLoaded", function () {
+=======
+// var SunCalc = require('./suncalc');
+>>>>>>> f81a9db8d7ebc4bd4dbdb756675cfaae677890ab
 
 function displaySunInfo() {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
 
+<<<<<<< HEAD
             const latitude = position.coords.latitude;
             const longitude = position.coords.longitude;
 
@@ -109,4 +114,42 @@ document.addEventListener('mousemove', function(event) {
 setInterval(displaySunInfo, 1000); // this updates shadow every second
  
 });
+=======
+    const latitude = position.coords.latitude; 
+    const longitude = position.coords.longitude;
+
+    //// calculates sun position for a given date and latitude/longitude. SunCalc.getTimes = function (date, lat, lng, height)
+    const times = SunCalc.getTimes(new Date(), latitude, longitude);
+
+    // calculates sun position for a given date and latitude/longitude. SunCalc.getPosition = function (date, lat, lng) {
+    const sunPosition = SunCalc.getPosition(new Date(), latitude, longitude);
+
+    //calculates shadowAngle using Azimuth for direction of shadow
+    const azimuth = sunPosition.azimuth;
+    azimuth.textContent = azimuth.toFixed(4);
+
+    const altitude = sunPosition.altitude;
+    altitude.textContent = altitude.toFixed(4);
+
+    const shadowAngle = (azimuth * (180 / Math.PI) + 180) % 360; //convert radians to degrees
+
+    // calculate shadowLength based on altitude
+    const shadowLength = 1 / Math.tan(altitude);
+
+    // Display shadow angle and length
+    document.getElementById('shadowAngle').textContent = shadowAngle.toFixed(2);
+    document.getElementById('shadowLength').textContent = shadowLength.toFixed(2);
+
+    //format times
+    const sunrise = times.sunrise.toLocaleTimeString();
+    const sunset = times.sunset.toLocaleTimeString();
+    document.getElementById("sunrise").textContent = sunrise;
+    document.getElementById("sunset").textContent = sunset;
+        });
+};
+}
+
+
+displaySunInfo();
+>>>>>>> f81a9db8d7ebc4bd4dbdb756675cfaae677890ab
 //calculate moon position
