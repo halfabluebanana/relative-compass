@@ -46,32 +46,32 @@ window.addEventListener("load", () => {
         }
     }
 
-    //Request permission for device orientation (just for iOS)
-    async function requestOrientationPermission() {
-        if (
-            typeof DeviceMotionEvent !== "undefined" &&
-            typeof DeviceMotionEvent.requestPermission === "function"
-        ) {
-            try {
-                const response = await DeviceMotionEvent.requestPermission();
-                if (response === "granted") {
-                    console.log("Device motion permission granted.");
-                    return true;
-                } else {
-                    console.warn("Device motion permission denied.");
-                    alert("Device orientation access is required for the compass to function");
-                    return false;
-                } 
-            } catch (error) {
-                console.error("Error requesting device orientation permission:", error);
-                alert("An error occurred while requesting device orientation permission.");
-                return false;
-            } 
-        } else {
-            console.log("DeviceMotionEvent.requestPermission is not required.");
-            return true; // permission not required 
-        }
-    }
+    // //Request permission for device orientation (just for iOS)
+    // async function requestOrientationPermission() {
+    //     if (
+    //         typeof DeviceMotionEvent !== "undefined" &&
+    //         typeof DeviceMotionEvent.requestPermission === "function"
+    //     ) {
+    //         try {
+    //             const response = await DeviceMotionEvent.requestPermission();
+    //             if (response === "granted") {
+    //                 console.log("Device motion permission granted.");
+    //                 return true;
+    //             } else {
+    //                 console.warn("Device motion permission denied.");
+    //                 alert("Device orientation access is required for the compass to function");
+    //                 return false;
+    //             } 
+    //         } catch (error) {
+    //             console.error("Error requesting device orientation permission:", error);
+    //             alert("An error occurred while requesting device orientation permission.");
+    //             return false;
+    //         } 
+    //     } else {
+    //         console.log("DeviceMotionEvent.requestPermission is not required.");
+    //         return true; // permission not required 
+    //     }
+    // }
 
 
 
