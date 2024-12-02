@@ -46,34 +46,44 @@ window.addEventListener("load", () => {
         }
     }
 
-
-    // window.addEventListener('load', function () {
-    //     // Declare global variables
-    //     let latitude1 = null;
-    //     let longitude1 = null;
-    //     let latlon1 = null;
-
-    //     let latitude2 = null;
-    //     let longitude2 = null;
-    //     let latlon2 = null;
-
-    //     // Check if we can get current position of user using Geolocation API
-    //     if ("geolocation" in navigator) {
-    //         navigator.geolocation.getCurrentPosition(success, error, {
-    //             enableHighAccuracy: true,
-    //             timeout: 30000,
-    //             maximumAge: 0,
-    //         });
-    //     } else {
-    //         console.log("Geolocation is not supported by this browser.");
-    //     }
-    
+    //Request permission for device orientation (just for iOS)
+    async function requestOrientationPermission() {
+        if (
+            typeof DeviceMotionEvent !== "undefined" &&
+            typeof DeviceMotionEvent.requestPermission === "function"
+        ) {
+            try {
+                const response = await DeviceMotionEvent.requestPermission();
+                if (response === "granted") {
+                    console.log("Device motion permission granted.");
+                    return true;
+                } else {
+                    console.warn("Device motion permission denied.");
+                    alert("Device orientation access is required for the compass to function");
+                    return false;
+                } 
+            } catch (error) {
+                console.error("Error requesting device orientation permission:", error);
+                alert("An error occurred while requesting device orientation permission.");
+                return false;
+            } 
+        } else {
+            console.log("DeviceMotionEvent.requestPermission is not required.");
+            return true; // permission not required 
+        }
+    }
 
 
 
         // Initialize compass. Track direction to the target location
         async function initializeCompass(targetLocation) {
             try {
+                const hasPermission = await requestOrientationPermission();
+                if (!hasPermission) {
+                    console.error("Compass initialization aborted: no permission.");
+                    return
+                }
+
                 const userLocation = await getCurrentLocation();
                 console.log("User location:", userLocation);
 
@@ -97,26 +107,13 @@ window.addEventListener("load", () => {
             }
         }
 
-        // Error handler for geolocation. Callback function
-        function handleGeolocationError(error) {
-            console.warn(`Geolocation error(${error.code}): ${error.message}`);
-            const errorMessages = {
-                1: "User denied the request for Geolocation. Enable location access to use the compass.",
-                2: "Position information is unavailable. Ensure GPS is enabled",
-                3: "Request to get user location has timed out.",
-            };
-            alert(errorMessages[error.code] || "An unknown error occurred.");
 
-        }
-
-        const targetLocation = { lat: 1.290270, lng: 103.825 }; // Example: Singapore
-        console.log("Target Location:", targetLocation);
-        initializeCompass(targetLocation);
-
+      
 
         async function displayUserMap() {
             try {
                 const userLocation = await getCurrentLocation();
+                const latlon = `${userLocation.lat},${userLocation.lng}`;
                 const mapImage = `http://maps.googleapis.com/maps/api/staticmap?center=${latlon}&zoom=20&size=640x640&maptype=satellite&sensor=false&key=AIzaSyCuFG-NOikYAj9JOBS3oD_nhuSxlu_T8v4`;
                 document.getElementById("mapholder").innerHTML = `<img src="${mapImage}" alt="Map">`;
             } catch (error) {
@@ -124,12 +121,22 @@ window.addEventListener("load", () => {
             }
         }
 
-            displayUserMap();
+     // Error handler for geolocation. Callback function
+     function handleGeolocationError(error) {
+        console.warn(`Geolocation error(${error.code}): ${error.message}`);
+        const errorMessages = {
+            1: "User denied the request for Geolocation. Enable location access to use the compass.",
+            2: "Position information is unavailable. Ensure GPS is enabled",
+            3: "Request to get user location has timed out.",
+        };
+        alert(errorMessages[error.code] || "An unknown error occurred.");
+    }
 
-        });
-
-
-
+    const targetLocation = { lat: 1.290270, lng: 103.825 }; // Example: Singapore
+    console.log("Target Location:", targetLocation);
+    initializeCompass(targetLocation);
+    displayUserMap();
+});
         // function coordinate(event) {
         //     const x = event.clientX;
         //     const y = event.clientY;
