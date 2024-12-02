@@ -65,9 +65,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const xPosition = shadowLength * Math.cos(shadowAngle * (Math.PI / 180));
         const yPosition = shadowLength * Math.sin(shadowAngle * (Math.PI / 180));
 
-        // Update link position
-        link.style.left = `${xPosition + 50}px`; // Adjust for centering
-        link.style.top = `${yPosition + 50}px`;
+    //     // Update link position
+    //     link.style.left = `${xPosition + 50}px`; // Adjust for centering
+    //     link.style.top = `${yPosition + 50}px`;
     }
 
     // Move the custom cursor with the mouse
