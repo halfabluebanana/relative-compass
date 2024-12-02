@@ -14,19 +14,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
     <script src="script.js" defer></script>
     <script src="suncalculation.js" defer></script>
-    <script src="cursor.js" defer></script>
+    <!-- <script src="cursor.js" defer></script> -->
 </head>
 
-<body onmousemove="coordinate(event)">
+<body>
     <div id="mapholder"></div>
     <div class="container">
         <div id="cursors">
             <div class="custom-cursor"></div>
         </div>
 
-        <div class="compass-container">
+        <div id="compass">
             <div class="compass-needle"></div>
         </div>
+
+        <div id = "mapholder"></div>
 
         <h4>Geolocation</h4>
         <p id="location">Latitude and Longitude will be displayed here.</p>
@@ -48,8 +50,14 @@
         Shadow Length <input type="text" id="shadowLength"> (relative to cursor height)<br><br>
     </div>
 
-    <iframe id="iframe" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
-        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    <div id="mapholder"></div>
+    <script>
+        const latlon = "8.04103749644471,98.81693667256101";
+        const img_url = `https://maps.googleapis.com/maps/api/staticmap?center=${latlon}&zoom=20&size=640x640&maptype=street&key=AIzaSyCuFG-NOikYAj9JOBS3oD_nhuSxlu_T8v4`;
+    
+        document.getElementById("mapholder").innerHTML = `<img src="${img_url}" alt="Static Map">`;
+    </script>
+    
 </body>
 
 </html>

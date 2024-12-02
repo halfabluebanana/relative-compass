@@ -1,155 +1,84 @@
-<<<<<<< HEAD
-//used the DOMContentLoaded Event listener because console kept showing me an error that browser is trying to assess #cursors before the DOM is fully loaded. 
 document.addEventListener("DOMContentLoaded", function () {
-=======
-// var SunCalc = require('./suncalc');
->>>>>>> f81a9db8d7ebc4bd4dbdb756675cfaae677890ab
+    function displaySunInfo() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
 
-function displaySunInfo() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
+                // Calculate sun times using SunCalc
+                const times = SunCalc.getTimes(new Date(), latitude, longitude);
+                const sunrise = times.sunrise.toLocaleTimeString();
+                const sunset = times.sunset.toLocaleTimeString();
 
-<<<<<<< HEAD
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
+                // Update sunrise and sunset in the DOM
+                document.getElementById("sunrise").value = sunrise;
+                document.getElementById("sunset").value = sunset;
 
-            //// calculates sun position for a given date and latitude/longitude. SunCalc.getTimes = function (date, lat, lng, height)
-            const times = SunCalc.getTimes(new Date(), latitude, longitude);
-            //console.log("times:" + JSON.stringify(times));
-            //get sunrise and sunset times using SunCalc. format times
-            const sunrise = times.sunrise.toLocaleTimeString();
-            const sunset = times.sunset.toLocaleTimeString();
+                // Calculate sun position using SunCalc
+                const sunPosition = SunCalc.getPosition(new Date(), latitude, longitude);
+                const azimuth = sunPosition.azimuth * (180 / Math.PI); // Convert to degrees
+                const altitude = sunPosition.altitude * (180 / Math.PI); // Convert to degrees
 
-            // display sunrise and sunset times in input elements on the page
-            //console.log("sunrise:" +  JSON.stringify(sunrise));
-            document.getElementById("sunrise").value = sunrise;
-            //console.log("sunset:" +  JSON.stringify(sunset))
-            document.getElementById("sunset").value = sunset;
-          
-            // calculates sun position (azimuth and altitude) for a given date and latitude/longitude. SunCalc.getPosition = function (date, lat, lng) {
-            const sunPosition = SunCalc.getPosition(new Date(), latitude, longitude);
-            // function shadowCalc() {
-            // const sunPosition = SunCalc.getPosition(new Date(), latitude, longitude);
-            //calculates shadowAngle using Azimuth for direction of shadow
-            const azimuth = sunPosition.azimuth;
-            azimuth.textContent = azimuth.toFixed(4);
-            const altitude = sunPosition.altitude;
-            altitude.textContent = altitude.toFixed(4);
+                // Calculate shadow angle and length
+                const shadowAngle = (azimuth + 180) % 360; // Normalize to 0-360
+                const shadowLength = 1 / Math.tan(sunPosition.altitude); // Shadow length formula
 
-            //Shadow Length and Shadow Angles 
-            const shadowAngle = (azimuth * (180 / Math.PI) + 180) % 360; //convert radians to degrees
-            // calculate shadowLength based on altitude
-            const shadowLength = 1 / Math.tan(altitude);
+                // Update shadow info in the DOM
+                document.getElementById("shadowAngle").value = shadowAngle.toFixed(2);
+                document.getElementById("shadowLength").value = shadowLength.toFixed(2);
 
-            // Display shadow angle and length
-            //shadowAngle is a JSON object object. so we pass that into JSON stringify
+                // Update shadow effect
+                updateShadowEffect(shadowAngle, shadowLength);
 
-            //console.log("shadowAngle:" +  JSON.stringify(shadowAngle))
-            document.getElementById('shadowAngle').value = shadowAngle.toFixed(2);
-            //round off shadowLength to 2 decimal points
-            //used .value instead of innerHTML because shadowAngle is a number and innerHTML, and we're displaying it on the page as an input text
-            //console.log(document.getElementById('shadowAngle'))
-
-            //console.log("shadowLength:" +  JSON.stringify(shadowLength))
-            document.getElementById('shadowLength').value = shadowLength.toFixed(2);
-            //round off shadowLength to 2 decimal points
-            //console.log(document.getElementById('shadowLength'))
-            // }
-
-            //Update shadow dynamically to the box shadow cursor using calculated shadow angle and length
-            updateShadowEffect(shadowAngle, shadowLength);
-
-            // Function to update the position of the link
-            function updateLinkPosition() {
-                // Calculate the position based on shadow angle and length
-                const xPosition = shadowLength * Math.cos(shadowAngle * (Math.PI / 180));
-                const yPosition = shadowLength * Math.sin(shadowAngle * (Math.PI / 180));
-
-                // Get the link element
-                const link = document.getElementById('dynamicLink');
-
-                // Set the new position
-                link.style.left = `${xPosition + 50}px`; // Adjust position based on shadow length (50px for centering)
-                link.style.top = `${yPosition + 50}px`; // Adjust position based on shadow length (50px for centering)
-            }
-
-            // Call the function to set the initial position of the link
-            updateLinkPosition();
-
-
-        });
-    };
-}
-
-function updateShadowEffect(shadowAngle, shadowLength) {
-    const cursor = document.querySelector('.custom-cursor');
-
-    if(!cursor) {
-        //console.error("Error: '.custom-cursor' element not found");
-        return; // exit function if cursor is null
+                // Update the position of a link dynamically
+                updateLinkPosition(shadowAngle, shadowLength);
+            });
+        } else {
+            console.error("Geolocation is not supported by this browser.");
+        }
     }
-    // apply shadow length and rotation based on sun's position
-    const shadowX = shadowLength * Math.cos(shadowAngle * (Math.PI / 180));
-    const shadowY = shadowLength * Math.sin(shadowLength * (Math.PI / 180));
 
-    // Log values to ensure shadowX and shadowY are correctly calculated
-    //console.log(`Shadow X: ${shadowX}, Shadow Y: ${shadowY}, Shadow Length: ${shadowLength}`);
+    function updateShadowEffect(shadowAngle, shadowLength) {
+        const cursor = document.querySelector(".custom-cursor");
+        if (!cursor) {
+            console.error("Error: '.custom-cursor' element not found");
+            return;
+        }
 
+        // Calculate shadow x and y components
+        const shadowX = shadowLength * Math.cos(shadowAngle * (Math.PI / 180));
+        const shadowY = shadowLength * Math.sin(shadowAngle * (Math.PI / 180));
 
-    // set box-shadow and transformation (rotation based on shadowAngle)
-    cursor.style.boxShadow = '${shadowX * 1000}px $shadowY * 1000}px ${shadowLength * 1000}px rgba(255, 0, 0, 0.5)';
-    cursor.style.transform = 'rotate(${shadowAngle}deg)';
-}
-
-document.addEventListener('mousemove', function(event) {
-    const cursor = document.querySelector('.custom-cursor');
-    if (cursor) { // ensure cursor exists before we move it
-    cursor.style.top = event.pageY + 'px';
-    cursor.style.left = event.pageX + 'px';
+        // Update cursor shadow style
+        cursor.style.boxShadow = `${shadowX * 10}px ${shadowY * 10}px ${shadowLength * 10}px rgba(255, 0, 0, 0.5)`;
+        cursor.style.transform = `rotate(${shadowAngle}deg)`;
     }
+
+    function updateLinkPosition(shadowAngle, shadowLength) {
+        // const link = document.getElementById("dynamicLink");
+        // if (!link) {
+        //     console.error("Error: '#dynamicLink' element not found");
+        //     return;
+        // }
+
+        // Calculate x and y position based on shadow angle and length
+        const xPosition = shadowLength * Math.cos(shadowAngle * (Math.PI / 180));
+        const yPosition = shadowLength * Math.sin(shadowAngle * (Math.PI / 180));
+
+        // Update link position
+        link.style.left = `${xPosition + 50}px`; // Adjust for centering
+        link.style.top = `${yPosition + 50}px`;
+    }
+
+    // Move the custom cursor with the mouse
+    document.addEventListener("mousemove", function (event) {
+        const cursor = document.querySelector(".custom-cursor");
+        if (cursor) {
+            cursor.style.top = `${event.pageY}px`;
+            cursor.style.left = `${event.pageX}px`;
+        }
+    });
+
+    // Update sun info every second
+    setInterval(displaySunInfo, 1000);
 });
-
-
-// call function to display sun info and update shadow effect
-setInterval(displaySunInfo, 1000); // this updates shadow every second
- 
-});
-=======
-    const latitude = position.coords.latitude; 
-    const longitude = position.coords.longitude;
-
-    //// calculates sun position for a given date and latitude/longitude. SunCalc.getTimes = function (date, lat, lng, height)
-    const times = SunCalc.getTimes(new Date(), latitude, longitude);
-
-    // calculates sun position for a given date and latitude/longitude. SunCalc.getPosition = function (date, lat, lng) {
-    const sunPosition = SunCalc.getPosition(new Date(), latitude, longitude);
-
-    //calculates shadowAngle using Azimuth for direction of shadow
-    const azimuth = sunPosition.azimuth;
-    azimuth.textContent = azimuth.toFixed(4);
-
-    const altitude = sunPosition.altitude;
-    altitude.textContent = altitude.toFixed(4);
-
-    const shadowAngle = (azimuth * (180 / Math.PI) + 180) % 360; //convert radians to degrees
-
-    // calculate shadowLength based on altitude
-    const shadowLength = 1 / Math.tan(altitude);
-
-    // Display shadow angle and length
-    document.getElementById('shadowAngle').textContent = shadowAngle.toFixed(2);
-    document.getElementById('shadowLength').textContent = shadowLength.toFixed(2);
-
-    //format times
-    const sunrise = times.sunrise.toLocaleTimeString();
-    const sunset = times.sunset.toLocaleTimeString();
-    document.getElementById("sunrise").textContent = sunrise;
-    document.getElementById("sunset").textContent = sunset;
-        });
-};
-}
-
-
-displaySunInfo();
->>>>>>> f81a9db8d7ebc4bd4dbdb756675cfaae677890ab
-//calculate moon position
