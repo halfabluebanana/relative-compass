@@ -75,7 +75,7 @@ hr {
   transition: transform 0.1s linear;
 }
 
-/* Custom cursor styles */
+/* Custom cursor styles
 #cursors {
   margin: 0;
   position: absolute;
@@ -95,7 +95,7 @@ hr {
   transform-origin: 50% 0%;
   border-radius: 1px;
   box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 0.5);
-}
+} */
 
 /* Container styles */
 .container {

@@ -38,21 +38,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function updateShadowEffect(shadowAngle, shadowLength) {
-        const cursor = document.querySelector(".custom-cursor");
-        if (!cursor) {
-            console.error("Error: '.custom-cursor' element not found");
-            return;
-        }
+    // function updateShadowEffect(shadowAngle, shadowLength) {
+    //     const cursor = document.querySelector(".custom-cursor");
+    //     if (!cursor) {
+    //         console.error("Error: '.custom-cursor' element not found");
+    //         return;
+    //     }
 
-        // Calculate shadow x and y components
-        const shadowX = shadowLength * Math.cos(shadowAngle * (Math.PI / 180));
-        const shadowY = shadowLength * Math.sin(shadowAngle * (Math.PI / 180));
+    //     // Calculate shadow x and y components
+    //     const shadowX = shadowLength * Math.cos(shadowAngle * (Math.PI / 180));
+    //     const shadowY = shadowLength * Math.sin(shadowAngle * (Math.PI / 180));
 
-        // Update cursor shadow style
-        cursor.style.boxShadow = `${shadowX * 10}px ${shadowY * 10}px ${shadowLength * 10}px rgba(255, 0, 0, 0.5)`;
-        cursor.style.transform = `rotate(${shadowAngle}deg)`;
-    }
+    //     // Update cursor shadow style
+    //     cursor.style.boxShadow = `${shadowX * 10}px ${shadowY * 10}px ${shadowLength * 10}px rgba(255, 0, 0, 0.5)`;
+    //     cursor.style.transform = `rotate(${shadowAngle}deg)`;
+    // }
 
     function updateLinkPosition(shadowAngle, shadowLength) {
         // const link = document.getElementById("dynamicLink");
