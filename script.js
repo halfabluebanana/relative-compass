@@ -12,7 +12,7 @@ window.addEventListener("load", () => {
                     // Use the newer 'deviceorientationabsolute' event if available
                     window.addEventListener('deviceorientationabsolute', handleOrientation, { once: false });
                     
-                    // Fallback to 'deviceorientation' if 'deviceorientationabsolute' is not supported
+                    // Fallback to 'device orientation' if 'deviceorientationabsolute' is not supported
                     window.addEventListener('deviceorientation', handleOrientation, { once: false });
                     return true;
                 } else {
