@@ -1,6 +1,64 @@
 window.addEventListener("load", () => {
     let heading = 0;
 
+
+    // Updated permission request function
+    async function requestDeviceOrientation() {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            try {
+                const permissionState = await DeviceOrientationEvent.requestPermission();
+                
+                if (permissionState === 'granted') {
+                    // Use the newer 'deviceorientationabsolute' event if available
+                    window.addEventListener('deviceorientationabsolute', handleOrientation, { once: false });
+                    
+                    // Fallback to 'deviceorientation' if 'deviceorientationabsolute' is not supported
+                    window.addEventListener('deviceorientation', handleOrientation, { once: false });
+                    return true;
+                } else {
+                    console.warn('Device orientation permission denied');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error requesting device orientation permission:', error);
+                return false;
+            }
+        } else {
+            // For browsers that don't require explicit permission
+            window.addEventListener('deviceorientationabsolute', handleOrientation, { once: false });
+            window.addEventListener('deviceorientation', handleOrientation, { once: false });
+            return true;
+        }
+    }
+
+    // Handle orientation events
+    function handleOrientation(event) {
+        // Prefer absolute orientation if available
+        const alpha = event.absolute ? event.alpha : (event.alpha || 0);
+        heading = alpha;
+
+        console.log('Heading:', heading);
+        
+        // Update compass if you have a target location
+        const targetLocation = { lat: 1.290270, lng: 103.825 }; // Example location
+        
+        getCurrentLocation().then(userLocation => {
+            const targetBearing = calculateBearing(
+                userLocation.lat,
+                userLocation.lng,
+                targetLocation.lat,
+                targetLocation.lng
+            );
+            updateCompass(heading, targetBearing);
+        }).catch(error => {
+            console.error("Error getting user location:", error);
+        });
+    }
+
+    // Request device orientation permissions
+    requestDeviceOrientation();
+
+    
     // Geolocation API: Get the user's current position
     function getCurrentLocation() {
         return new Promise((resolve, reject) => {
@@ -46,70 +104,10 @@ window.addEventListener("load", () => {
         }
     }
 
-   // Request permission for device orientation (for iOS)
-   window.addEventListener("load", () => {
-    let heading = 0;
-
-    // Updated permission request function
-    async function requestDeviceOrientation() {
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-            try {
-                const permissionState = await DeviceOrientationEvent.requestPermission();
-                
-                if (permissionState === 'granted') {
-                    // Use the newer 'deviceorientationabsolute' event if available
-                    window.addEventListener('deviceorientationabsolute', handleOrientation, { once: false });
-                    
-                    // Fallback to 'deviceorientation' if 'deviceorientationabsolute' is not supported
-                    window.addEventListener('deviceorientation', handleOrientation, { once: false });
-                } else {
-                    console.warn('Device orientation permission denied');
-                }
-            } catch (error) {
-                console.error('Error requesting device orientation permission:', error);
-            }
-        } else {
-            // For browsers that don't require explicit permission
-            window.addEventListener('deviceorientationabsolute', handleOrientation, { once: false });
-            window.addEventListener('deviceorientation', handleOrientation, { once: false });
-        }
-    }
-
-    // Handle orientation events
-    function handleOrientation(event) {
-        // Prefer absolute orientation if available
-        const alpha = event.absolute ? event.alpha : (event.alpha || 0);
-        heading = alpha;
-
-        console.log('Heading:', heading);
-        
-        // Update compass if you have a target location
-        const targetLocation = { lat: 1.290270, lng: 103.825 }; // Example location
-        
-        getCurrentLocation().then(userLocation => {
-            const targetBearing = calculateBearing(
-                userLocation.lat,
-                userLocation.lng,
-                targetLocation.lat,
-                targetLocation.lng
-            );
-            updateCompass(heading, targetBearing);
-        }).catch(error => {
-            console.error("Error getting user location:", error);
-        });
-    }
-
-    // Request device orientation permissions
-    requestDeviceOrientation();
-
-    // Existing functions like getCurrentLocation, calculateBearing, updateCompass remain the same
-});
-
-
         // Initialize compass. Track direction to the target location
         async function initializeCompass(targetLocation) {
             try {
-                const hasPermission = await requestDevicePermissions();
+                const hasPermission = await requestDeviceOrientations();
                 if (!hasPermission) {
                     console.error("Compass initialization aborted: no permission.");
                     return
@@ -137,8 +135,6 @@ window.addEventListener("load", () => {
             }
         }
 
-
-      
 
         async function displayUserMap() {
             try {
