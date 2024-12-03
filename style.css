@@ -84,7 +84,7 @@ hr {
 .compass-needle::after {
   content: '';
   position: absolute;
-  top: 0; /* Align arrowhead at the top of the needle */
+  top: 0%; /* Align arrowhead at the top of the needle */
   /* bottom: 100%; Position arrowhead at the top of the needle */
   left: 50%;
   transform: translateX(-50%);
