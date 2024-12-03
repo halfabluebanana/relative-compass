@@ -107,7 +107,7 @@ window.addEventListener("load", () => {
         // Initialize compass. Track direction to the target location
         async function initializeCompass(targetLocation) {
             try {
-                const hasPermission = await requestDeviceOrientations();
+                const hasPermission = await requestDeviceOrientation();
                 if (!hasPermission) {
                     console.error("Compass initialization aborted: no permission.");
                     return
