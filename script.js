@@ -46,32 +46,32 @@ window.addEventListener("load", () => {
         }
     }
 
-    // //Request permission for device orientation (just for iOS)
-    // async function requestOrientationPermission() {
-    //     if (
-    //         typeof DeviceMotionEvent !== "undefined" &&
-    //         typeof DeviceMotionEvent.requestPermission === "function"
-    //     ) {
-    //         try {
-    //             const response = await DeviceMotionEvent.requestPermission();
-    //             if (response === "granted") {
-    //                 console.log("Device motion permission granted.");
-    //                 return true;
-    //             } else {
-    //                 console.warn("Device motion permission denied.");
-    //                 alert("Device orientation access is required for the compass to function");
-    //                 return false;
-    //             } 
-    //         } catch (error) {
-    //             console.error("Error requesting device orientation permission:", error);
-    //             alert("An error occurred while requesting device orientation permission.");
-    //             return false;
-    //         } 
-    //     } else {
-    //         console.log("DeviceMotionEvent.requestPermission is not required.");
-    //         return true; // permission not required 
-    //     }
-    // }
+   // Request permission for device orientation (for iOS)
+async function requestOrientationPermission() {
+    if (
+        typeof DeviceOrientationEvent !== "undefined" &&
+        typeof DeviceOrientationEvent.requestPermission === "function"
+    ) {
+        try {
+            const response = await DeviceOrientationEvent.requestPermission();
+            if (response === "granted") {
+                console.log("Device motion permission granted.");
+                return true;
+            } else {
+                console.warn("Device motion permission denied.");
+                alert("Device orientation access is required for the compass to function");
+                return false;
+            } 
+        } catch (error) {
+            console.error("Error requesting device orientation permission:", error);
+            alert("An error occurred while requesting device orientation permission.");
+            return false;
+        } 
+    } else {
+        console.log("DeviceMotionEvent.requestPermission is not required.");
+        return true; // permission not required 
+    }
+}
 
 
 
@@ -83,10 +83,10 @@ window.addEventListener("load", () => {
                     console.error("Compass initialization aborted: no permission.");
                     return
                 }
-
+        
                 const userLocation = await getCurrentLocation();
                 console.log("User location:", userLocation);
-
+        
                 const targetBearing = calculateBearing(
                     userLocation.lat,
                     userLocation.lng,
@@ -95,15 +95,14 @@ window.addEventListener("load", () => {
                 );
                 console.log("Target Bearing:", targetBearing);
                 
-
                 // Listen to changes in device orientation along z axis. Alpha is a value between 0 and 360
                 window.addEventListener('deviceorientation', (event) => {
-                    heading = event.alpha || 0; // handle misssing alpha 
-                    updateCompass(currentHeading, targetBearing);
+                    heading = event.alpha || 0; // handle missing alpha 
+                    updateCompass(heading, targetBearing);
                 });
             } catch (error) {
                 console.error("Error getting user location:", error);
-                alert("Failed to initialise compass. check permissions to share location and try again")
+                alert("Failed to initialise compass. Check permissions to share location and try again")
             }
         }
 
