@@ -106,6 +106,7 @@ window.addEventListener("load", () => {
         const compassNeedle = document.querySelector(".compass-needle");
         if (compassNeedle) {
             compassNeedle.style.transform = `rotate(${relativeAngle}deg)`;
+            console.log("Current Heading:", currentHeading, "Target Bearing:", targetBearing, "Relative Angle:", relativeAngle);
         } else {
             console.warn("Compass needle element not found.");
         }

@@ -54,7 +54,7 @@ hr {
 }
 
 /* Compass styles */
-..compass-container {
+.compass-container {
   position: relative;
   width: 200px;
   height: 200px;
@@ -66,12 +66,13 @@ hr {
   background: radial-gradient(circle, #f0f0f0 90%, #ddd);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin: 20px auto; /* Center align */
+  overflow: hidden; /* Clip overflow if needed */
 }
 
 .compass-needle {
   position: absolute;
-  width: 10px; /* Narrow body for the needle */
-  height: 80px; /* Length of the needle */
+  width: 8px; /* Narrow body for the needle */
+  height: 90px; /* Length of the needle */
   background-color: #d32f2f; /* Red color for visibility */
   border-radius: 5px; /* Smooth edges */
   transform-origin: bottom center;
@@ -83,7 +84,8 @@ hr {
 .compass-needle::after {
   content: '';
   position: absolute;
-  bottom: 100%; /* Position arrowhead at the top of the needle */
+  top: 0; /* Align arrowhead at the top of the needle */
+  /* bottom: 100%; Position arrowhead at the top of the needle */
   left: 50%;
   transform: translateX(-50%);
   width: 0;
