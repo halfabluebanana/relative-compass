@@ -13,16 +13,17 @@
         rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/suncalc/1.9.0/suncalc.min.js"></script>
     <script src="script.js" defer></script>
-    <script src="suncalculation.js" defer></script>
+    <script src="permission.js"></script>
+    <!-- <script src="suncalculation.js" defer></script> -->
     <!-- <script src="cursor.js" defer></script> -->
 </head>
 
 <body>
     <div id="mapholder"></div>
     <div class="container">
-        <div id="cursors">
+        <!-- <div id="cursors">
             <div class="custom-cursor"></div>
-        </div>
+        </div> -->
 
         <div id="compass">
             <div class="compass-needle"></div>
@@ -30,25 +31,29 @@
 
         <div id = "mapholder"></div>
 
+        <div id="permissions-container">
+            <button id="enable-permissions">Enable Permissions</button>
+        </div>
+
         <h4>Geolocation</h4>
         <p id="location">Latitude and Longitude will be displayed here.</p>
 
-        <h4>Mouse Cursor Coordinates</h4>
+        <!-- <h4>Mouse Cursor Coordinates</h4>
         X-coordinate <input type="text" id="X">
         <br><br>
         Y-coordinate <input type="text" id="Y">
-        <br><br>
+        <br><br> -->
 
-        <h4>Sun Position</h4>
+        <!-- <h4>Sun Position</h4>
         Sunrise <input type="text" id="sunrise">
         <br><br>
         Sunset <input type="text" id="sunset">
-        <br><br>
+        <br><br> -->
 
-        <h4>Shadow Info</h4>
+        <!-- <h4>Shadow Info</h4>
         Shadow Angle (Azimuth) <input type="text" id="shadowAngle"> degrees<br><br>
         Shadow Length <input type="text" id="shadowLength"> (relative to cursor height)<br><br>
-    </div>
+    </div> -->
 
     <div id="mapholder"></div>
     <script>
