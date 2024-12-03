@@ -58,6 +58,14 @@ window.addEventListener("load", () => {
     // Request device orientation permissions
     requestDeviceOrientation();
 
+      // Enable permissions button handler
+      document.getElementById("enable-permissions").addEventListener("click", async () => {
+        const permissionState = await requestDeviceOrientation();
+        if (!permissionState) {
+            alert("Permission not granted. Compass features will not work.");
+        }
+    });
+
     
     // Geolocation API: Get the user's current position
     function getCurrentLocation() {
