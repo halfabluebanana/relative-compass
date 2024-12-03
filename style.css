@@ -84,7 +84,7 @@ hr {
 .compass-needle::after {
   content: '';
   position: absolute;
-  top: 0%; /* Align arrowhead at the top of the needle */
+  top: -12px; /* Align arrowhead at the top of the needle */
   /* bottom: 100%; Position arrowhead at the top of the needle */
   left: 50%;
   transform: translateX(-50%);
@@ -92,7 +92,7 @@ hr {
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-bottom: 20px solid #d32f2f; /* Same color as needle */
+  border-bottom: 15px solid #d32f2f; /* Same color as needle */
 }
 
 /* Compass center circle */
