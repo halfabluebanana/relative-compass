@@ -2,7 +2,7 @@ function requestDevicePermissions() {
     if (typeof DeviceOrientationEvent.requestPermission === 'function' &&
         typeof DeviceMotionEvent.requestPermission === 'function') {
 
-        const requestOrientationPermission = () => {
+        const requestDevicePermissions = () => {
             DeviceOrientationEvent.requestPermission().then(permissionState => {
                 if (permissionState === 'granted') {
                     window.addEventListener('deviceorientation', function (event) {
@@ -20,7 +20,7 @@ function requestDevicePermissions() {
                     document.body.appendChild(button);
 
                     button.addEventListener('click', () => {
-                        requestOrientationPermission();
+                        requestDevicePermissions();
                         requestMotionPermission();
                         document.body.removeChild(button); // Remove button after requesting permissions
                     });
@@ -77,7 +77,7 @@ function requestDevicePermissions() {
             });
         };
 
-        requestOrientationPermission();
+        requestDevicePermissions();
 
         const button = document.createElement('button');
         button.innerText = "Enable Orientation";
@@ -88,7 +88,7 @@ function requestDevicePermissions() {
         document.body.appendChild(button);
 
         button.addEventListener('click', () => {
-            requestOrientationPermission();
+            requestDevicePermissions();
             requestMotionPermission();
             document.body.removeChild(button); // Remove button after requesting permissions
         });
