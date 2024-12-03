@@ -71,35 +71,22 @@ hr {
 
 .compass-needle {
   position: absolute;
-  width: 8px; /* Narrow body for the needle */
-  height: 90px; /* Length of the needle */
-  background-color: #d32f2f; /* Red color for visibility */
-  border-radius: 5px; /* Smooth edges */
-  transform-origin: bottom center;
+  width: 100px; /* Narrow body for the needle */
+  height: 100px; /* Length of the needle */
+  background: conic-gradient(#d32f2f 0deg 90deg, transparent 90deg 180deg); /* Sector effect */
+  clip-path: polygon(50% 50%, 100% 0, 100% 100%, 50% 50%); /* Make it a sector shape */
+  /* border-radius: 5px; Smooth edges */
+  transform-origin: center center;
   transform: rotate(0deg);
   transition: transform 0.2s ease-in-out;
 }
 
-/* Arrowhead styling */
-.compass-needle::after {
-  content: '';
-  position: absolute;
-  top: -20px; /* Align arrowhead at the top of the needle */
-  /* bottom: 100%; Position arrowhead at the top of the needle */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 15px solid #d32f2f; /* Same color as needle */
-}
 
 /* Compass center circle */
 .compass-center {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  width: 20px;
+  height: 20px;
   background-color: #333;
   border-radius: 50%;
   z-index: 10; /* Keep it above the needle */
