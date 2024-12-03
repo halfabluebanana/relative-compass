@@ -66,7 +66,6 @@ window.addEventListener("load", () => {
         }
     });
 
-    
     // Geolocation API: Get the user's current position
     function getCurrentLocation() {
         return new Promise((resolve, reject) => {
